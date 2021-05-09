@@ -42,14 +42,22 @@ $(document).ready(function () {
     });
   }, 1000);
 
-  $("#send").click((ev) => {
+  $("#start").click((ev) => {
     $.ajax({
       type: "post",
-      url: `http://${configs.nodeAddress}:${configs.nodePort}/cmd`,
-      data: { value: $("#cmd").val() },
-      dataType: "text",
+      url: `http://${configs.nodeAddress}:${configs.nodePort}/start`,
       success: function (response) {
-        $("#console").html(response.replace("\n", "<br>"));
+        $("#console").html(response);
+      },
+    });
+  });
+
+  $("#stop").click((ev) => {
+    $.ajax({
+      type: "post",
+      url: `http://${configs.nodeAddress}:${configs.nodePort}/stop`,
+      success: function (response) {
+        $("#console").html(response);
       },
     });
   });
