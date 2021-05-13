@@ -9,16 +9,14 @@ $(document).ready(function () {
   setInterval(() => {
     $.ajax({
       type: "get",
-      url: `http://${configs.nodeAddress}:${configs.nodePort}/cpu`,
+      url: `http://${configs.nodeAddress}:${configs.nodePort}/disk`,
       success: function (response) {
         // console.log(response);
-        $("#cpuBar").css("width", response.toString());
-        $("#cpuBarLabel").html(response.toString());
+        $("#diskBar").css("width", response.toString());
+        $("#diskBarLabel").html(response.toString());
       },
     });
-  }, 1000);
 
-  setInterval(() => {
     $.ajax({
       type: "get",
       url: `http://${configs.nodeAddress}:${configs.nodePort}/mem`,
@@ -28,21 +26,30 @@ $(document).ready(function () {
         $("#memBarLabel").html(response.toString());
       },
     });
-  }, 1000);
 
-  setInterval(() => {
     $.ajax({
       type: "get",
-      url: `http://${configs.nodeAddress}:${configs.nodePort}/disk`,
+      url: `http://${configs.nodeAddress}:${configs.nodePort}/cpu`,
       success: function (response) {
         // console.log(response);
-        $("#diskBar").css("width", response.toString());
-        $("#diskBarLabel").html(response.toString());
+        $("#cpuBar").css("width", response.toString());
+        $("#cpuBarLabel").html(response.toString());
+      },
+    });
+
+    $.ajax({
+      type: "get",
+      url: `http://${configs.nodeAddress}:${configs.nodePort}/logs`,
+      success: function (response) {
+        // console.log(response);
+        $("#console").html(response.toString());
+        $("#console").animate({ scrollTop: $("#console").height() }, 100);
       },
     });
   }, 1000);
 
   $("#start").click((ev) => {
+    console.log("Starting server...");
     $.ajax({
       type: "post",
       url: `http://${configs.nodeAddress}:${configs.nodePort}/start`,
@@ -53,6 +60,7 @@ $(document).ready(function () {
   });
 
   $("#stop").click((ev) => {
+    console.log("Stopping server...");
     $.ajax({
       type: "post",
       url: `http://${configs.nodeAddress}:${configs.nodePort}/stop`,
